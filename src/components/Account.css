@@ -21,3 +21,9 @@
   color: white;
   background-color: rgb(71, 173, 231);
 }
+
+
+/* Styling to adjust visibility of user registration form */
+.register {
+  padding: 10px;
+}

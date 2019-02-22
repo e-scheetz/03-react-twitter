@@ -31,4 +31,5 @@
 /*Tweet Input Box*/
 .tweet-form {
   margin-top: 2em;
+  width: 400px;
 }

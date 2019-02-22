@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as messageActions from '../actions/messageActions';
 import * as messageApi from '../api/messageApi';
+import './App.css';
 
 class TweetInputBox extends Component {
   constructor() {
@@ -14,30 +15,57 @@ class TweetInputBox extends Component {
   }
 
   handleChange = (e) => {
+    console.log(e)
+    if(e.length > 255){
+      return
+    }
     this.setState({ tweet: e.currentTarget.value });
   }
 
-  handleSubmit = async (event) => {
-    event.preventDefault();
-    const { tweetInputBox } = this.state;
-    this.setState({ tweet: tweetInputBox || '' });
+  handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      const { tweetInputBox } = this.state;
+      this.setState({ tweet: tweetInputBox || '' });
 
-    if(this.props.user.id !== undefined){
-      messageApi.postMessage(this.props.user.id, this.state.tweet).then(() => {
-        console.log('TODO: Call load messages action. Dispatch to redux.');
-        this.setState({ tweet: '' });
-      });
+      if(this.props.user.id !== undefined){
+        messageApi.postMessage(this.props.user.id, this.state.tweet).then(() => {
+          console.log('TODO: Call load messages action. Dispatch to redux.');
+          this.setState({ tweet: '' });
+        });
+      }
     }
   }
+
+// the below code has been commented out because a handler (above) has been added to handle the post on keypress of 'Enter'
+
+  // handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const { tweetInputBox } = this.state;
+  //   this.setState({ tweet: tweetInputBox || '' });
+
+  //   if(this.props.user.id !== undefined){
+  //     messageApi.postMessage(this.props.user.id, this.state.tweet).then(() => {
+  //       console.log('TODO: Call load messages action. Dispatch to redux.');
+  //       this.setState({ tweet: '' });
+  //     });
+  //   }
+  // }
 
   tweetBox(){
     if(this.props.user.id !== undefined){
       return(
         <form onSubmit={this.handleSubmit}>
-          <input
+          <textarea
             value={ this.state.tweet }
-            type="text" onChange={this.handleChange} maxLength="144" name="tweetInputBox" placeholder="What's on your mind?" />
-          <input type="submit" value="Submit" />
+            type="text"
+            onChange={this.handleChange}
+            onKeyPress={this.handleKeyPress}
+            maxLength="144"
+            className="tweet-form"
+            name="tweetInputBox"
+            placeholder="What's on your mind?" />
+          {/* Commented out as a submit button is */}
+          {/* <input type="submit" value="Submit" /> */}
         </form>
       );
     }

@@ -25,6 +25,9 @@ class Register extends React.Component {
   };
 
   render() {
+    const styles = {
+      
+    }
     return (
       <div>
         <form onSubmit={this.onSubmit} method="post" className="register">
